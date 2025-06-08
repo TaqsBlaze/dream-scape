@@ -37,17 +37,8 @@ Simply select your desired product type, industry, color preferences, and target
 
 ## Getting Started 💻
 
-To run Dreamscape locally:
-
-1.  Clone the repository:
-    ```bash
-    git clone [https://github.com/TaqsBlaze/dream-scape.git](https://github.com/TaqsBlaze/dream-scape.git)
-    ```
-2.  Navigate to the project directory:
-    ```bash
-    cd dream-scape
-    ```
-3.  Open `index.html` in your web browser.
+Try out Dreamscap:
+[Dreamscape](https://taqsblaze.github.io/dream-scape)
 
 ## Contributing 🤝
 
