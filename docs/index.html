@@ -1,296 +1,349 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Design System MVP</title>
+    <title>Dreamscape - Intelligent Product Design Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
-        /* styles.css - Main Stylesheet */
-        .gradient-bg {
-            background: linear-gradient(135deg, #f42e7d 0%, #3250f8 100%);
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0F19; /* A very dark blue */
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #8B5CF6, #EC4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
-        .design-card {
-            transition: all 0.3s ease;
+        .hero-bg {
+            background-color: #0B0F19;
+            background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.15), transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(236, 72, 153, 0.15), transparent 40%);
+        }
+
+        .feature-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(17, 24, 39, 0.5); /* Semi-transparent dark bg */
             backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(17, 24, 39, 0.8);
+            border-color: rgba(139, 92, 246, 0.5);
         }
         
-        .design-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        .cta-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
         }
 
-        .generated-design {
-            background: linear-gradient(45deg, #f0f0f0, #ffffff);
-            border: 2px dashed #e0e0e0;
-            min-height: 200px;
-        }
-
-        .ai-thinking {
-            animation: pulse 2s infinite;
-        }
-
-        /* Color Picker Styles */
-        .color-option {
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .color-option:hover {
+        .cta-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
         }
 
-        .color-option.active {
-            border-color: #374151 !important;
-            border-width: 3px;
+        /* Animation for elements on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
-
-        /* Custom color input styling */
-        input[type="color"] {
-            appearance: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        input[type="color"]::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
-
-        input[type="color"]::-webkit-color-swatch {
-            border: 1px solid #d1d5db;
-            border-radius: 4px;
-        }
-
-        /* Responsive design enhancements */
-        @media (max-width: 768px) {
-            .design-card {
-                transform: none;
-            }
-            
-            .design-card:hover {
-                transform: none;
-                box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-            }
-        }
-
-        /* Animation keyframes */
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .slide-in {
-            animation: slideIn 0.5s ease-out;
+        
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <!-- Header Component -->
-    <header class="gradient-bg text-white py-6 px-4">
-        <div class="container mx-auto">
+<body class="text-gray-200">
+
+    <!-- Header -->
+    <header class="fixed w-full top-0 z-50 bg-opacity-80 backdrop-blur-lg border-b border-gray-800">
+        <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                        <span class="text-purple-600 font-bold text-xl">AI</span>
+                    <div class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700">
+                        <svg class="w-6 h-6 gradient-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-5.243-7.494H17.243M3.757 12h16.486M5.879 16.121L18.121 7.879m-12.242 0L18.121 16.121"></path></svg>
                     </div>
-                    <div>
-                        <h1 class="text-2xl font-bold">Dreamscape</h1>
-                        <p class="text-purple-100 text-sm">Intelligent Product Design Generator</p>
-                    </div>
+                    <h1 class="text-2xl font-bold text-white">Dreamscape</h1>
                 </div>
-                <div class="hidden md:flex items-center space-x-4">
-                    <span class="text-purple-100">v1.0 MVP</span>
-                </div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-300 hover:text-white transition">Features</a>
+                    <a href="#how-it-works" class="text-gray-300 hover:text-white transition">How It Works</a>
+                    <a href="#pricing" class="text-gray-300 hover:text-white transition">Pricing</a>
+                </nav>
+                <a href="designer/" class="hidden md:block bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-5 rounded-lg transition">
+                    Get Started
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-300 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+             <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4">
+                <a href="#features" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-800 rounded">Features</a>
+                <a href="#how-it-works" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-800 rounded">How It Works</a>
+                <a href="#pricing" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-800 rounded">Pricing</a>
+                 <a href="designer/" class="w-full mt-2 bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-5 rounded-lg transition">
+                    Get Started
+                 </a>
             </div>
         </div>
     </header>
 
-    <div class="container mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            <!-- Design Input Panel Component -->
-            <div class="lg:col-span-1">
-                <div class="bg-white rounded-xl shadow-lg p-6 design-card">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Design Parameters</h2>
-                    
-                    <!-- Product Type Selection -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Product Type</label>
-                        <select id="productType" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <option value="web-app">Web Application</option>
-                            <option value="mobile-app">Mobile App</option>
-                            <option value="landing-page">Landing Page</option>
-                            <option value="dashboard">Dashboard</option>
-                            <option value="e-commerce">E-commerce</option>
-                        </select>
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-bg pt-32 pb-20 md:pt-40 md:pb-28">
+            <div class="container mx-auto px-6 text-center">
+                <div class="max-w-3xl mx-auto">
+                    <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mb-6 reveal">
+                        Design at the Speed of Thought with <span class="gradient-text">AI</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-400 mb-10 reveal" style="transition-delay: 100ms;">
+                        Dreamscape is an intelligent design partner that generates stunning, production-ready mockups for your apps, websites, and dashboards in seconds. Stop brainstorming, start creating.
+                    </p>
+                    <div class="reveal" style="transition-delay: 200ms;">
+                        <a href="designer/" class="cta-button inline-block bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-4 px-10 rounded-full text-lg">
+                            Generate Your First Design for Free
+                        </a>
+                        <p class="text-gray-500 mt-4 text-sm">No credit card required.</p>
                     </div>
-
-                    <!-- Industry Selection -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Industry</label>
-                        <select id="industry" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <option value="technology">Technology</option>
-                            <option value="healthcare">Healthcare</option>
-                            <option value="finance">Finance</option>
-                            <option value="education">Education</option>
-                            <option value="retail">Retail</option>
-                            <option value="creative">Creative</option>
-                        </select>
-                    </div>
-
-                    <!-- Color Scheme -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Color Preference</label>
-                        
-                        <!-- Preset Colors -->
-                        <div class="grid grid-cols-4 gap-2 mb-4">
-                            <button class="color-option w-full h-8 rounded-md border-2 border-gray-400" 
-                                    style="background: linear-gradient(45deg, #3B82F6, #1E40AF)" data-color="blue"></button>
-                            <button class="color-option w-full h-8 rounded-md border-2 border-transparent focus:border-gray-400" 
-                                    style="background: linear-gradient(45deg, #EF4444, #DC2626)" data-color="red"></button>
-                            <button class="color-option w-full h-8 rounded-md border-2 border-transparent focus:border-gray-400" 
-                                    style="background: linear-gradient(45deg, #10B981, #059669)" data-color="green"></button>
-                            <button class="color-option w-full h-8 rounded-md border-2 border-transparent focus:border-gray-400" 
-                                    style="background: linear-gradient(45deg, #8B5CF6, #7C3AED)" data-color="purple"></button>
-                        </div>
-
-                        <!-- Custom Color Picker -->
-                        <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm font-medium text-gray-700">Custom Color</span>
-                                <button id="useCustomColor" class="text-xs px-3 py-1 bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors">
-                                    Use Custom
-                                </button>
-                            </div>
-                            
-                            <div class="space-y-3">
-                                <!-- Primary Color -->
-                                <div class="flex items-center space-x-3">
-                                    <label class="text-xs text-gray-600 w-16">Primary:</label>
-                                    <input type="color" id="primaryColor" value="#3B82F6" class="w-8 h-8 rounded border border-gray-300 cursor-pointer">
-                                    <input type="text" id="primaryColorHex" value="#3B82F6" class="flex-1 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500">
-                                </div>
-                                
-                                <!-- Secondary Color -->
-                                <div class="flex items-center space-x-3">
-                                    <label class="text-xs text-gray-600 w-16">Secondary:</label>
-                                    <input type="color" id="secondaryColor" value="#1E40AF" class="w-8 h-8 rounded border border-gray-300 cursor-pointer">
-                                    <input type="text" id="secondaryColorHex" value="#1E40AF" class="flex-1 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500">
-                                </div>
-                                
-                                <!-- Accent Color -->
-                                <div class="flex items-center space-x-3">
-                                    <label class="text-xs text-gray-600 w-16">Accent:</label>
-                                    <input type="color" id="accentColor" value="#EFF6FF" class="w-8 h-8 rounded border border-gray-300 cursor-pointer">
-                                    <input type="text" id="accentColorHex" value="#EFF6FF" class="flex-1 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500">
-                                </div>
-                            </div>
-                            
-                            <!-- Color Preview -->
-                            <div class="mt-3 p-3 rounded-lg" id="colorPreview" style="background: linear-gradient(45deg, #3B82F6, #1E40AF)">
-                                <div class="text-white text-xs font-medium">Color Preview</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Target Audience -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Target Audience</label>
-                        <input id="audience" type="text" placeholder="e.g., Young professionals, Enterprise users..." 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    </div>
-
-                    <!-- Generate Button -->
-                    <button id="generateBtn" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-md hover:from-purple-700 hover:to-blue-700 transition-all duration-200 font-medium">
-                        Generate AI Design
-                    </button>
                 </div>
+                <!-- Placeholder for product image/animation -->
+                <!-- <div class="mt-16 max-w-4xl mx-auto reveal" style="transition-delay: 300ms;">
+                    <div class="aspect-video bg-gray-800/50 rounded-2xl p-4 border border-gray-700 shadow-2xl shadow-purple-900/10">
+                         <div class="w-full h-full border-2 border-dashed border-gray-600 rounded-xl flex items-center justify-center">
+                            <div class="text-center">
+                                <svg class="w-16 h-16 mx-auto text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c.251.023.501.05.75.082m.75.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.256c.249.023.498.05.748.082M9.75 18.75c-1.036 0-1.875-.84-1.875-1.875v-1.5c0-1.036.84-1.875 1.875-1.875h4.5c1.036 0 1.875.84 1.875 1.875v1.5c0 1.036-.84 1.875-1.875 1.875h-4.5z"></path></svg>
+                                <p class="mt-4 font-semibold text-gray-300">Dynamic Product Animation Here</p>
+                                <p class="text-sm text-gray-500">Showcasing the AI in action</p>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </section>
 
-                <!-- AI Insights Component -->
-                <div class="bg-white rounded-xl shadow-lg p-6 design-card mt-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">AI Insights</h3>
-                    <div id="aiInsights" class="space-y-3 text-sm text-gray-600">
-                        <p>Select your parameters and generate a design to see AI recommendations.</p>
+        <!-- Features Section -->
+        <section id="features" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 reveal">Why You'll Love Dreamscape</h2>
+                    <p class="text-gray-400 text-lg reveal" style="transition-delay: 100ms;">
+                        Go from a simple prompt to a complete design system. Our AI handles the heavy lifting, so you can focus on what matters.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="feature-card p-8 rounded-2xl reveal">
+                        <div class="bg-purple-600/20 text-purple-400 w-12 h-12 rounded-lg flex items-center justify-center mb-5">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Instant Idea to Mockup</h3>
+                        <p class="text-gray-400">Describe your product, choose an industry and style, and watch as a unique design is generated in real-time.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="feature-card p-8 rounded-2xl reveal" style="transition-delay: 150ms;">
+                        <div class="bg-pink-600/20 text-pink-400 w-12 h-12 rounded-lg flex items-center justify-center mb-5">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Exportable Code</h3>
+                        <p class="text-gray-400">Get more than just a pretty picture. Export your designs as clean, production-ready HTML & CSS.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="feature-card p-8 rounded-2xl reveal" style="transition-delay: 300ms;">
+                        <div class="bg-blue-600/20 text-blue-400 w-12 h-12 rounded-lg flex items-center justify-center mb-5">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Iterate & Refine</h3>
+                        <p class="text-gray-400">Not quite right? Instantly generate variations, tweak color palettes, and adjust typography until it's perfect.</p>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Design Preview Component -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-xl shadow-lg p-6 design-card">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-xl font-semibold text-gray-800">Generated Design</h2>
-                        <div class="flex space-x-2">
-                            <button id="exportBtn" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors disabled:opacity-50" disabled>
-                                Export
-                            </button>
-                            <button id="iterateBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50" disabled>
-                                Iterate
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Design Canvas -->
-                    <div id="designCanvas" class="generated-design rounded-lg flex items-center justify-center">
-                        <div class="text-center text-gray-500">
-                            <div class="w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-full flex items-center justify-center">
-                                <span class="text-2xl">🎨</span>
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="py-20 bg-gray-900/50">
+             <div class="container mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 reveal">Just 3 Simple Steps</h2>
+                    <p class="text-gray-400 text-lg reveal" style="transition-delay: 100ms;">Transform your vision into reality with a process that's as simple as it is powerful.</p>
+                </div>
+                <div class="relative">
+                    <!-- Dotted line for desktop -->
+                    <div class="hidden lg:block absolute top-1/2 -translate-y-1/2 left-0 right-0 h-0.5 border-t-2 border-dashed border-gray-700"></div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+                        <!-- Step 1 -->
+                        <div class="text-center reveal">
+                            <div class="relative inline-block">
+                                <div class="w-20 h-20 flex items-center justify-center rounded-full bg-gray-800 border-2 border-gray-700 text-2xl font-bold text-purple-400 mb-6">1</div>
                             </div>
-                            <p>Click "Generate AI Design" to create your product design</p>
+                            <h3 class="text-xl font-bold text-white mb-3">Define Parameters</h3>
+                            <p class="text-gray-400">Tell our AI about your product, target audience, and preferred aesthetic.</p>
                         </div>
-                    </div>
-
-                    <!-- Design Variations -->
-                    <div id="variations" class="mt-6 hidden">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Design Variations</h3>
-                        <div class="grid grid-cols-3 gap-4" id="variationGrid">
-                            <!-- Variations will be populated by JS -->
+                         <!-- Step 2 -->
+                        <div class="text-center reveal" style="transition-delay: 150ms;">
+                             <div class="relative inline-block">
+                                <div class="w-20 h-20 flex items-center justify-center rounded-full bg-gray-800 border-2 border-gray-700 text-2xl font-bold text-pink-400 mb-6">2</div>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-3">Generate & Review</h3>
+                            <p class="text-gray-400">Hit 'Generate' and watch as multiple design concepts are created for you in seconds.</p>
+                        </div>
+                         <!-- Step 3 -->
+                        <div class="text-center reveal" style="transition-delay: 300ms;">
+                             <div class="relative inline-block">
+                                <div class="w-20 h-20 flex items-center justify-center rounded-full bg-gray-800 border-2 border-gray-700 text-2xl font-bold text-blue-400 mb-6">3</div>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-3">Export & Build</h3>
+                            <p class="text-gray-400">Choose your favorite design, export the code, and start building your product immediately.</p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Design Specifications Component -->
-                <div class="bg-white rounded-xl shadow-lg p-6 design-card mt-6 hidden" id="specifications">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Design Specifications</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <h4 class="font-medium text-gray-700 mb-2">Typography</h4>
-                            <div id="typography" class="text-sm text-gray-600">
-                                <!-- Will be populated by JS -->
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="font-medium text-gray-700 mb-2">Color Palette</h4>
-                            <div id="colorPalette" class="flex space-x-2">
-                                <!-- Will be populated by JS -->
-                            </div>
-                        </div>
+            </div>
+        </section>
+        
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 reveal">Flexible Pricing for Everyone</h2>
+                    <p class="text-gray-400 text-lg reveal" style="transition-delay: 100ms;">
+                        Start for free and scale up as you grow. Our plans are designed to fit the needs of individuals, startups, and large teams.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <!-- Plan 1: Starter -->
+                    <div class="feature-card p-8 rounded-2xl flex flex-col reveal">
+                        <h3 class="text-2xl font-bold text-white">Starter</h3>
+                        <p class="text-gray-400 mt-2 mb-6">For individuals & hobbyists</p>
+                        <div class="text-5xl font-black text-white mb-4">$0<span class="text-lg font-medium text-gray-400">/mo</span></div>
+                        <ul class="space-y-4 text-gray-300 mb-8 flex-grow">
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>5 Designs per month</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Basic design templates</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Community support</li>
+                        </ul>
+                        <button class="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition">Get Started</button>
                     </div>
+
+                    <!-- Plan 2: Pro (Most Popular) -->
+                    <div class="relative p-8 rounded-2xl flex flex-col border-2 border-purple-600 bg-gray-900 reveal" style="transition-delay: 150ms;">
+                        <div class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2">
+                            <span class="bg-purple-600 text-white text-xs font-bold px-4 py-1 rounded-full uppercase">Most Popular</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Pro</h3>
+                        <p class="text-purple-300 mt-2 mb-6">For startups & freelancers</p>
+                        <div class="text-5xl font-black text-white mb-4">$29<span class="text-lg font-medium text-gray-400">/mo</span></div>
+                        <ul class="space-y-4 text-gray-300 mb-8 flex-grow">
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Unlimited designs</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>HTML & CSS exports</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Premium templates</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Priority support</li>
+                        </ul>
+                        <button class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 px-6 rounded-lg transition hover:opacity-90">Choose Pro</button>
+                    </div>
+
+                    <!-- Plan 3: Enterprise -->
+                    <div class="feature-card p-8 rounded-2xl flex flex-col reveal" style="transition-delay: 300ms;">
+                        <h3 class="text-2xl font-bold text-white">Enterprise</h3>
+                        <p class="text-gray-400 mt-2 mb-6">For large teams & agencies</p>
+                        <div class="text-5xl font-black text-white mb-4">Custom</div>
+                        <ul class="space-y-4 text-gray-300 mb-8 flex-grow">
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>All Pro features</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Team collaboration tools</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Custom integrations</li>
+                            <li class="flex items-center"><svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Dedicated account manager</li>
+                        </ul>
+                        <button class="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900/50 border-t border-gray-800">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                     <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700">
+                            <svg class="w-6 h-6 gradient-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-5.243-7.494H17.243M3.757 12h16.486M5.879 16.121L18.121 7.879m-12.242 0L18.121 16.121"></path></svg>
+                        </div>
+                        <h1 class="text-2xl font-bold text-white">Dreamscape</h1>
+                    </div>
+                    <p class="text-gray-400 max-w-sm">The future of design is autonomous. Join us and build products faster than ever before.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Product</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition">Features</a></li>
+                        <li><a href="#pricing" class="text-gray-400 hover:text-white transition">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Updates</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">About</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm">&copy; 2024 Dreamscape AI. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-500 hover:text-white transition">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-white transition">
+                       <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+                    </a>
+                     <a href="#" class="text-gray-500 hover:text-white transition">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.019c0 4.438 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.019C22 6.477 17.523 2 12 2z" clip-rule="evenodd" /></svg>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
+    </footer>
 
-    <!-- JavaScript Modules -->
-    <script src="js/app.min.js" type="module">
-       
+
+    <script>
+        // JavaScript for mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // JavaScript for reveal on scroll animations
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        revealElements.forEach(el => {
+            observer.observe(el);
+        });
+
     </script>
 </body>
 </html>
