@@ -1,49 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Design System MVP</title>
+    <title>Dreamscape AI Designer</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
-        /* styles.css - Main Stylesheet */
-        .gradient-bg {
-            background: linear-gradient(135deg, #f42e7d 0%, #3250f8 100%);
+        /* Custom Styles - Inspired by Dreamscape Landing Page */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0F19; /* A very dark blue */
+            color: #e2e8f0; /* Light gray text for contrast */
         }
-        
-        .design-card {
-            transition: all 0.3s ease;
+
+        /* Gradient Text for Headings/Logos */
+        .gradient-text {
+            background: linear-gradient(90deg, #8B5CF6, #EC4899); /* Purple to Pink */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Header Styling */
+        .header-bg {
+            background: rgba(17, 24, 39, 0.7); /* Semi-transparent dark bg */
             backdrop-filter: blur(10px);
-        }
-        
-        .design-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* Feature Card (used for all main panels) */
+        .feature-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(17, 24, 39, 0.5); /* Semi-transparent dark bg */
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            background: rgba(17, 24, 39, 0.7);
+            border-color: rgba(139, 92, 246, 0.3); /* Subtle hover border color */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Generated Design Canvas - With max-height for scrollability */
         .generated-design {
-            background: linear-gradient(45deg, #f0f0f0, #ffffff);
-            border: 2px dashed #e0e0e0;
-            min-height: 200px;
+            background-color: #1a202c; /* Even darker background for the canvas */
+            border: 2px dashed #4a5568; /* Techy dashed border */
+            min-height: 250px;
+            max-height: 600px; /* Set a max height for scrollability */
+            overflow-y: auto; /* Enable vertical scrolling */
+            width: 100%;
+            padding: 1.5rem; /* px-6 py-6 */
+            border-radius: 0.5rem; /* rounded-lg */
+            transition: all 0.3s ease;
         }
 
+        /* Scrollbar styling for a techy feel */
+        .generated-design::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .generated-design::-webkit-scrollbar-track {
+            background: #2d3748; /* Darker track */
+            border-radius: 10px;
+        }
+
+        .generated-design::-webkit-scrollbar-thumb {
+            background: #8B5CF6; /* Purple thumb */
+            border-radius: 10px;
+        }
+
+        .generated-design::-webkit-scrollbar-thumb:hover {
+            background: #9d73fa; /* Lighter purple on hover */
+        }
+
+        /* AI Thinking Animation */
         .ai-thinking {
             animation: pulse 2s infinite;
+            color: #a0aec0; /* text-gray-400 */
+        }
+        .ai-thinking .text-4xl {
+            color: #8B5CF6; /* Purple for AI icon */
         }
 
         /* Color Picker Styles */
         .color-option {
             transition: all 0.2s ease;
             cursor: pointer;
+            border: 2px solid transparent; /* default border */
         }
 
         .color-option:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25); /* Deeper shadow on hover */
         }
 
         .color-option.active {
-            border-color: #374151 !important;
+            border-color: #EC4899 !important; /* Pink ring for active */
             border-width: 3px;
         }
 
@@ -59,81 +116,105 @@
         }
 
         input[type="color"]::-webkit-color-swatch {
-            border: 1px solid #d1d5db;
+            border: 1px solid #4a5568; /* Darker border */
             border-radius: 4px;
         }
 
-        /* Responsive design enhancements */
-        @media (max-width: 768px) {
-            .design-card {
-                transform: none;
-            }
-            
-            .design-card:hover {
-                transform: none;
-                box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-            }
+        /* Form input focus styles */
+        .form-input-dark {
+            background-color: #1f2937; /* bg-gray-800 */
+            border-color: #374151; /* gray-700 border */
+            color: #e2e8f0; /* text-gray-200 */
+        }
+        .form-input-dark:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5); /* Purple focus ring */
+            border-color: #8B5CF6;
         }
 
-        /* Animation keyframes */
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
+        /* Notification Styling */
+        .notification {
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Button Gradient Styles */
+        .btn-gradient {
+            background: linear-gradient(90deg, #8B5CF6, #EC4899); /* Purple to Pink */
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            transition: all 0.3s ease;
+            border: none;
+        }
+        .btn-gradient:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+            opacity: 0.95;
+        }
+        .btn-gradient:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: linear-gradient(90deg, #4a5568, #4a5568);
+            transform: none;
+            box-shadow: none;
         }
 
-        .slide-in {
-            animation: slideIn 0.5s ease-out;
+        .btn-export {
+            background: linear-gradient(90deg, #10B981, #059669); /* Green */
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+        .btn-export:hover {
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-iterate {
+            background: linear-gradient(90deg, #3B82F6, #1E40AF); /* Blue */
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+        .btn-iterate:hover {
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Footer styling */
+        .footer-bg {
+            background: rgba(17, 24, 39, 0.7); /* Semi-transparent dark bg */
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0aec0; /* text-gray-400 */
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-900 min-h-screen flex flex-col">
     <!-- Header Component -->
-    <header class="gradient-bg text-white py-6 px-4">
+    <header class="fixed w-full top-0 z-50 header-bg py-4 px-4 shadow-xl">
         <div class="container mx-auto">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                        <span class="text-purple-600 font-bold text-xl">AI</span>
+                    <div class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700">
+                        <!-- Techy icon -->
+                        <svg class="w-6 h-6 gradient-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 10v4M19 10v4M2 12h20M7 12a2 2 0 11-4 0 2 2 0 014 0zm16 0a2 2 0 11-4 0 2 2 0 014 0zM12 2a2 2 0 00-2 2v16a2 2 0 002 2 2 2 0 002-2V4a2 2 0 00-2-2z"></path>
+                        </svg>
                     </div>
-                    <div>
-                        <h1 class="text-2xl font-bold">Dreamscape</h1>
-                        <p class="text-purple-100 text-sm">Intelligent Product Design Generator</p>
-                    </div>
+                    <h1 class="text-2xl font-bold text-white">Dreamscape</h1>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
-                    <span class="text-purple-100">v1.0 MVP</span>
+                    <span class="text-indigo-200 text-sm">v1.0.1 - AI Powered</span>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8 mt-20 flex-grow">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
+
             <!-- Design Input Panel Component -->
             <div class="lg:col-span-1">
-                <div class="bg-white rounded-xl shadow-lg p-6 design-card">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-6">Design Parameters</h2>
-                    
+                <div class="feature-card rounded-xl p-6">
+                    <h2 class="text-xl font-semibold text-gray-100 mb-6">Design Parameters</h2>
+
                     <!-- Product Type Selection -->
                     <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Product Type</label>
-                        <select id="productType" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Product Type</label>
+                        <select id="productType" class="w-full px-3 py-2 rounded-md form-input-dark">
                             <option value="web-app">Web Application</option>
                             <option value="mobile-app">Mobile App</option>
                             <option value="landing-page">Landing Page</option>
@@ -144,8 +225,8 @@
 
                     <!-- Industry Selection -->
                     <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Industry</label>
-                        <select id="industry" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Industry</label>
+                        <select id="industry" class="w-full px-3 py-2 rounded-md form-input-dark">
                             <option value="technology">Technology</option>
                             <option value="healthcare">Healthcare</option>
                             <option value="finance">Finance</option>
@@ -157,52 +238,52 @@
 
                     <!-- Color Scheme -->
                     <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Color Preference</label>
-                        
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Color Preference</label>
+
                         <!-- Preset Colors -->
                         <div class="grid grid-cols-4 gap-2 mb-4">
-                            <button class="color-option w-full h-8 rounded-md border-2 border-gray-400" 
-                                    style="background: linear-gradient(45deg, #3B82F6, #1E40AF)" data-color="blue"></button>
-                            <button class="color-option w-full h-8 rounded-md border-2 border-transparent focus:border-gray-400" 
-                                    style="background: linear-gradient(45deg, #EF4444, #DC2626)" data-color="red"></button>
-                            <button class="color-option w-full h-8 rounded-md border-2 border-transparent focus:border-gray-400" 
-                                    style="background: linear-gradient(45deg, #10B981, #059669)" data-color="green"></button>
-                            <button class="color-option w-full h-8 rounded-md border-2 border-transparent focus:border-gray-400" 
-                                    style="background: linear-gradient(45deg, #8B5CF6, #7C3AED)" data-color="purple"></button>
+                            <button class="color-option w-full h-8 rounded-md"
+                                    style="background: linear-gradient(45deg, #3B82F6, #1E40AF); border-color: #EC4899;" data-color="blue"></button>
+                            <button class="color-option w-full h-8 rounded-md"
+                                    style="background: linear-gradient(45deg, #EF4444, #DC2626);" data-color="red"></button>
+                            <button class="color-option w-full h-8 rounded-md"
+                                    style="background: linear-gradient(45deg, #10B981, #059669);" data-color="green"></button>
+                            <button class="color-option w-full h-8 rounded-md"
+                                    style="background: linear-gradient(45deg, #8B5CF6, #7C3AED);" data-color="purple"></button>
                         </div>
 
                         <!-- Custom Color Picker -->
-                        <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="border border-gray-700 rounded-lg p-4 bg-gray-800">
                             <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm font-medium text-gray-700">Custom Color</span>
-                                <button id="useCustomColor" class="text-xs px-3 py-1 bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors">
+                                <span class="text-sm font-medium text-gray-300">Custom Color</span>
+                                <button id="useCustomColor" class="text-xs px-3 py-1 bg-indigo-700 text-white rounded-full hover:bg-indigo-600 transition-colors">
                                     Use Custom
                                 </button>
                             </div>
-                            
+
                             <div class="space-y-3">
                                 <!-- Primary Color -->
                                 <div class="flex items-center space-x-3">
-                                    <label class="text-xs text-gray-600 w-16">Primary:</label>
-                                    <input type="color" id="primaryColor" value="#3B82F6" class="w-8 h-8 rounded border border-gray-300 cursor-pointer">
-                                    <input type="text" id="primaryColorHex" value="#3B82F6" class="flex-1 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500">
+                                    <label class="text-xs text-gray-400 w-16">Primary:</label>
+                                    <input type="color" id="primaryColor" value="#3B82F6" class="w-8 h-8 rounded border form-input-dark">
+                                    <input type="text" id="primaryColorHex" value="#3B82F6" class="flex-1 px-2 py-1 text-xs rounded form-input-dark">
                                 </div>
-                                
+
                                 <!-- Secondary Color -->
                                 <div class="flex items-center space-x-3">
-                                    <label class="text-xs text-gray-600 w-16">Secondary:</label>
-                                    <input type="color" id="secondaryColor" value="#1E40AF" class="w-8 h-8 rounded border border-gray-300 cursor-pointer">
-                                    <input type="text" id="secondaryColorHex" value="#1E40AF" class="flex-1 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500">
+                                    <label class="text-xs text-gray-400 w-16">Secondary:</label>
+                                    <input type="color" id="secondaryColor" value="#1E40AF" class="w-8 h-8 rounded border form-input-dark">
+                                    <input type="text" id="secondaryColorHex" value="#1E40AF" class="flex-1 px-2 py-1 text-xs rounded form-input-dark">
                                 </div>
-                                
+
                                 <!-- Accent Color -->
                                 <div class="flex items-center space-x-3">
-                                    <label class="text-xs text-gray-600 w-16">Accent:</label>
-                                    <input type="color" id="accentColor" value="#EFF6FF" class="w-8 h-8 rounded border border-gray-300 cursor-pointer">
-                                    <input type="text" id="accentColorHex" value="#EFF6FF" class="flex-1 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500">
+                                    <label class="text-xs text-gray-400 w-16">Accent:</label>
+                                    <input type="color" id="accentColor" value="#EFF6FF" class="w-8 h-8 rounded border form-input-dark">
+                                    <input type="text" id="accentColorHex" value="#EFF6FF" class="flex-1 px-2 py-1 text-xs rounded form-input-dark">
                                 </div>
                             </div>
-                            
+
                             <!-- Color Preview -->
                             <div class="mt-3 p-3 rounded-lg" id="colorPreview" style="background: linear-gradient(45deg, #3B82F6, #1E40AF)">
                                 <div class="text-white text-xs font-medium">Color Preview</div>
@@ -212,21 +293,21 @@
 
                     <!-- Target Audience -->
                     <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Target Audience</label>
-                        <input id="audience" type="text" placeholder="e.g., Young professionals, Enterprise users..." 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Target Audience</label>
+                        <input id="audience" type="text" placeholder="e.g., Young professionals, Enterprise users..."
+                               class="w-full px-3 py-2 rounded-md form-input-dark">
                     </div>
 
                     <!-- Generate Button -->
-                    <button id="generateBtn" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-md hover:from-purple-700 hover:to-blue-700 transition-all duration-200 font-medium">
+                    <button id="generateBtn" class="w-full text-white py-3 px-4 rounded-md font-medium btn-gradient">
                         Generate AI Design
                     </button>
                 </div>
 
                 <!-- AI Insights Component -->
-                <div class="bg-white rounded-xl shadow-lg p-6 design-card mt-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">AI Insights</h3>
-                    <div id="aiInsights" class="space-y-3 text-sm text-gray-600">
+                <div class="feature-card rounded-xl p-6 mt-6">
+                    <h3 class="text-lg font-semibold text-gray-100 mb-4">AI Insights</h3>
+                    <div id="aiInsights" class="space-y-3 text-sm text-gray-300">
                         <p>Select your parameters and generate a design to see AI recommendations.</p>
                     </div>
                 </div>
@@ -234,32 +315,34 @@
 
             <!-- Design Preview Component -->
             <div class="lg:col-span-2">
-                <div class="bg-white rounded-xl shadow-lg p-6 design-card">
+                <div class="feature-card rounded-xl p-6">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-xl font-semibold text-gray-800">Generated Design</h2>
+                        <h2 class="text-xl font-semibold text-gray-100">Generated Design</h2>
                         <div class="flex space-x-2">
-                            <button id="exportBtn" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors disabled:opacity-50" disabled>
+                            <button id="exportBtn" class="px-4 py-2 text-white rounded-md btn-gradient btn-export" disabled>
                                 Export
                             </button>
-                            <button id="iterateBtn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50" disabled>
+                            <button id="iterateBtn" class="px-4 py-2 text-white rounded-md btn-gradient btn-iterate" disabled>
                                 Iterate
                             </button>
                         </div>
                     </div>
 
                     <!-- Design Canvas -->
-                    <div id="designCanvas" class="generated-design rounded-lg flex items-center justify-center">
-                        <div class="text-center text-gray-500">
-                            <div class="w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-full flex items-center justify-center">
-                                <span class="text-2xl">🎨</span>
+                    <div id="designCanvas" class="generated-design rounded-lg">
+                        <!-- Initial placeholder content, which will be replaced by AI-generated HTML -->
+                        <div class="text-center text-gray-500 p-8">
+                            <div class="w-20 h-20 mx-auto mb-4 bg-gray-700 rounded-full flex items-center justify-center">
+                                <span class="text-4xl text-indigo-400">🚀</span>
                             </div>
-                            <p>Click "Generate AI Design" to create your product design</p>
+                            <p class="text-lg text-gray-400">Your AI-generated design will appear here.</p>
+                            <p class="text-sm text-gray-500 mt-2">Start by configuring your design parameters on the left.</p>
                         </div>
                     </div>
 
                     <!-- Design Variations -->
                     <div id="variations" class="mt-6 hidden">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Design Variations</h3>
+                        <h3 class="text-lg font-semibold text-gray-100 mb-4">Design Variations</h3>
                         <div class="grid grid-cols-3 gap-4" id="variationGrid">
                             <!-- Variations will be populated by JS -->
                         </div>
@@ -267,17 +350,17 @@
                 </div>
 
                 <!-- Design Specifications Component -->
-                <div class="bg-white rounded-xl shadow-lg p-6 design-card mt-6 hidden" id="specifications">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Design Specifications</h3>
-                    <div class="grid grid-cols-2 gap-4">
+                <div class="feature-card rounded-xl p-6 mt-6 hidden" id="specifications">
+                    <h3 class="text-lg font-semibold text-gray-100 mb-4">Design Specifications</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <h4 class="font-medium text-gray-700 mb-2">Typography</h4>
-                            <div id="typography" class="text-sm text-gray-600">
+                            <h4 class="font-medium text-gray-300 mb-2">Typography</h4>
+                            <div id="typography" class="text-sm text-gray-400">
                                 <!-- Will be populated by JS -->
                             </div>
                         </div>
                         <div>
-                            <h4 class="font-medium text-gray-700 mb-2">Color Palette</h4>
+                            <h4 class="font-medium text-gray-300 mb-2">Color Palette</h4>
                             <div id="colorPalette" class="flex space-x-2">
                                 <!-- Will be populated by JS -->
                             </div>
@@ -288,9 +371,14 @@
         </div>
     </div>
 
+    <!-- Footer Component -->
+    <footer class="footer-bg py-4 px-4 text-center text-sm mt-8">
+        <div class="container mx-auto">
+            &copy; 2025 Dreamscape AI. All rights reserved. Built with AI.
+        </div>
+    </footer>
+
     <!-- JavaScript Modules -->
-    <script src="../js/app.min.js" type="module">
-       
-    </script>
+    <script src="../js/app.min.js" type="module"></script>
 </body>
 </html>
